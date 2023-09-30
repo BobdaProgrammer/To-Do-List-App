@@ -1,0 +1,41 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <meta charset="UTF-8" />
+    <title>To do list</title>
+  </head>
+  <script src="index.js"></script>
+  <body>
+    <div class="main" id="main">
+    <div id="color_Menu" class="colorMenu">
+        <button id="colorWhite" class="colorWhite" onclick="colorChoice('rgb(0, 0, 0)')"></button>
+        <button id="colorGreen" class="colorGreen" onclick="colorChoice('rgb(0,130,55)'); showSuccessTick(500);"></button>
+        <button id="colorOrange" class="colorOrange" onclick="colorChoice('rgb(220, 172, 0)'); showSuccessTick(500);"></button>
+        <button id="colorPink" class="colorPink"onclick="colorChoice('rgb(230,80,105)'); showSuccessTick(500);"></button>
+        <button id="colorBlue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
+    </div>
+    <div class="searchbar">
+        <input type="text" id="searchBox" class="search" onkeydown="searchCheck(value,event)" >
+        <button id = "searchImportant" class="Isearch" onclick="searchImportant(this)"></button>
+    </div>
+    </div>
+    <div class="sort-container">
+        <button onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
+    </div>
+    <div class="container">
+        <input type="text" id="box" class="box" onkeydown="return enterKeyPressed(event)">
+        <input type="button" value="Add Item" onclick="addItem();" class="button">
+        <div id="list"></div>
+        <div id="successTick" class="success-tick">&#10004;</div>
+    </div>
+    <div id="settings" onclick="openSettings();" class="settings"></div>
+    <div id="settingsPage" class="settings-page">
+        <label for="checkforsettings">
+            <input type="checkbox" id="checkforsettings"> Show finished items as strikethrough
+        </label>
+        <button onclick="saveList(); showSuccessTick(1000);">Save Changes</button>
+    </div>
+</body>
+</html>
