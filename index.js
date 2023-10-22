@@ -134,7 +134,7 @@ function addItem() {
       var text = document.createElement("a");
       text.className = "list-item-text";
       text.id = "item-text";
-      text.innerHTML = document.getElementById("box").value;
+      text.innerHTML = document.getElementById("box").value += " ";
       newItem.appendChild(text);
       text.href = URL(text.innerHTML);
     } else {
@@ -286,12 +286,14 @@ function showSuccessTick(time) {
 }
 
 function saveList() {
+
   localStorage.setItem("storedList", document.getElementById("list").innerHTML);
   localStorage.setItem("Icolor", Icolor);
   localStorage.setItem(
     "settingsCheck",
     document.getElementById("checkforsettings").checked.toString()
   );
+
 }
 
 function loadList() {

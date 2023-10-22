@@ -1,0 +1,10 @@
+{
+    "manifest_version": 2,
+    "name": "To do list app",
+    "permissions": [
+      "storage"
+    ],
+    "version": "1.0",
+    "description": "The best to do list"
+  }
+  
