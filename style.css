@@ -194,10 +194,6 @@ body {
     border: 2px dashed #ccc;
 }
 @media only screen and (max-width: 600px) {
-    .list-item {
-        align-items: flex-start;
-    }
-
     .list-item-text {
         margin-right: 0;
         margin-bottom: 5px;
