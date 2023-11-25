@@ -19,7 +19,8 @@
         <button id="colorBlue" aria-label="color blue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
     </div>
     <div class="searchbar">
-        <input type="text" id="searchBox" for="searchbar" class="search" onkeydown="searchCheck(value,event)" >
+        <label for="searchBox">Search Bar</label>
+        <input type="text" id="searchBox" class="search" onkeydown="searchCheck(value,event)" >
         <button id = "searchImportant" aria-label="search by color" class="Isearch" onclick="searchImportant(this)"></button>
     </div>
     </div>
@@ -27,8 +28,10 @@
         <button aria-label="sort items" onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
     </div>
     <div class="container">
-        <input type="text" for="new item box" id="box" class="box" onkeydown="return enterKeyPressed(event)">
-        <input type="button" for="Add New Item" value="Add Item" onclick="addItem();" class="button">
+        <label for="box">new item text box</label>
+        <input type="text" id="box" class="box" onkeydown="return enterKeyPressed(event)">
+        <label for="AddNewItem">Add new Item</label>
+        <input type="button" id="AddNewItem" value="Add Item" onclick="addItem();" class="button">
         <div id="list"></div>
         <div id="successTick" class="success-tick">&#10004;</div>
     </div>
