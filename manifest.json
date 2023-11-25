@@ -31,7 +31,7 @@
     "permissions": [
       "storage"
     ],
-    "display": "fulscreen",
+    "display": "fullscreen",
     "version": "1.0",
     "description": "The best to do list"
   }
