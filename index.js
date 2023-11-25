@@ -6,35 +6,7 @@ function colorChoice(colorChoice) {
   Icolor = colorChoice;
   CurrentCol();
 }
-// Check if the browser supports PWA
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-  // Show the install button
-  const installButton = document.getElementById('installButton');
-  installButton.style.display = 'block';
 
-  // Register the service worker
-  navigator.serviceWorker.register('./service-worker.js').then(reg => {
-    console.log('Service Worker registered with scope:', reg.scope);
-  });
-
-  // Handle the install button click
-  installButton.addEventListener('click', () => {
-    // Prompt the user to install the app
-    reg.deferredPrompt.prompt();
-
-    // Wait for the user to respond
-    reg.deferredPrompt.userChoice.then(choiceResult => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the A2HS prompt');
-      } else {
-        console.log('User dismissed the A2HS prompt');
-      }
-
-      // Clear the deferredPrompt variable
-      reg.deferredPrompt = null;
-    });
-  });
-}
 
 function URL(string) {
   let url = "";
