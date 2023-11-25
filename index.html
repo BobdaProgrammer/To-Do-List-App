@@ -11,19 +11,19 @@
   <body>
     <div class="main" id="main">
     <div id="color_Menu" class="colorMenu">
-        <button id="colorWhite" class="colorWhite" onclick="colorChoice('rgb(0, 0, 0)')"></button>
-        <button id="colorGreen" class="colorGreen" onclick="colorChoice('rgb(0,130,55)'); showSuccessTick(500);"></button>
-        <button id="colorOrange" class="colorOrange" onclick="colorChoice('rgb(220, 172, 0)'); showSuccessTick(500);"></button>
-        <button id="colorPink" class="colorPink"onclick="colorChoice('rgb(230,80,105)'); showSuccessTick(500);"></button>
-        <button id="colorBlue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
+        <button id="colorWhite" alt="color white" class="colorWhite" onclick="colorChoice('rgb(0, 0, 0)')"></button>
+        <button id="colorGreen" alt="color green" class="colorGreen" onclick="colorChoice('rgb(0,130,55)'); showSuccessTick(500);"></button>
+        <button id="colorOrange" alt="color orange" class="colorOrange" onclick="colorChoice('rgb(220, 172, 0)'); showSuccessTick(500);"></button>
+        <button id="colorPink" alt="color pink" class="colorPink"onclick="colorChoice('rgb(230,80,105)'); showSuccessTick(500);"></button>
+        <button id="colorBlue" alt="color blue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
     </div>
     <div class="searchbar">
         <input type="text" id="searchBox" class="search" onkeydown="searchCheck(value,event)" >
-        <button id = "searchImportant" class="Isearch" onclick="searchImportant(this)"></button>
+        <button id = "searchImportant" alt="search by color" class="Isearch" onclick="searchImportant(this)"></button>
     </div>
     </div>
     <div class="sort-container">
-        <button onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
+        <button alt="sort items" onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
     </div>
     <div class="container">
         <input type="text" id="box" class="box" onkeydown="return enterKeyPressed(event)">
@@ -36,7 +36,7 @@
         <label for="checkforsettings">
             <input type="checkbox" id="checkforsettings"> Show finished items as strikethrough
         </label>
-        <button onclick="saveList(); showSuccessTick(1000);">Save Changes</button>
+        <button alt="save changes" onclick="saveList(); showSuccessTick(1000);">Save Changes</button>
     </div>
 </body>
 </html>
