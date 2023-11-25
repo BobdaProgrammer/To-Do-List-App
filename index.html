@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="style.css">
@@ -19,7 +19,7 @@
         <button id="colorBlue" aria-label="color blue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
     </div>
     <div class="searchbar">
-        <input type="text" id="searchBox" class="search" onkeydown="searchCheck(value,event)" >
+        <input type="text" id="searchBox" for="searchbar" class="search" onkeydown="searchCheck(value,event)" >
         <button id = "searchImportant" aria-label="search by color" class="Isearch" onclick="searchImportant(this)"></button>
     </div>
     </div>
@@ -27,8 +27,8 @@
         <button aria-label="sort items" onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
     </div>
     <div class="container">
-        <input type="text" id="box" class="box" onkeydown="return enterKeyPressed(event)">
-        <input type="button" value="Add Item" onclick="addItem();" class="button">
+        <input type="text" for="new item box" id="box" class="box" onkeydown="return enterKeyPressed(event)">
+        <input type="button" for="Add New Item" value="Add Item" onclick="addItem();" class="button">
         <div id="list"></div>
         <div id="successTick" class="success-tick">&#10004;</div>
     </div>
