@@ -1,9 +1,37 @@
 {
     "manifest_version": 2,
-    "name": "To do list app",
+    "name": "BitWaveToDoList",
+    "short_name": "ToDoList",
+    "icons": [
+      {
+        "src": "manifest-icon-192.maskable.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "manifest-icon-192.maskable.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+      },
+      {
+        "src": "manifest-icon-512.maskable.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "manifest-icon-512.maskable.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
     "permissions": [
       "storage"
     ],
+    "display": "fulscreen",
     "version": "1.0",
     "description": "The best to do list"
   }
