@@ -101,20 +101,16 @@ function enterKeyPressed(event) {
 }
 
 function dragStart(event) {
-  event.preventDefault(); // Prevent the default action to allow custom dragging
-  if (event.type === "touchstart" && event.touches.length === 1) {
-    // Handle touch events
-    var touch = event.touches[0];
-    // Your touch-specific logic here
-  } else if (event.type === "dragstart") {
-    // Handle drag events
-    dragSrcElement = this;
-    event.dataTransfer.effectAllowed = "move";
-    event.dataTransfer.setData("text/html", this.innerHTML);
-    this.classList.add("dragging");
+  if (event.target.classList.contains("important-button")) {
+    event.preventDefault(); // Prevent dragging if the important button is clicked
+    return;
   }
-}
 
+  dragSrcElement = this;
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("text/html", this.innerHTML);
+  this.classList.add("dragging");
+}
 
 function addEventListenersToItem(item) {
   item.draggable = true;
