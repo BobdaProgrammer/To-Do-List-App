@@ -136,6 +136,12 @@ function addEventListenersToItem(item) {
   item.addEventListener("dragleave", dragLeave);
   item.addEventListener("drop", drop);
   item.addEventListener("dragend", dragEnd);
+        item.addEventListener("touchstart", dragStart);
+        item.addEventListener("touchmove", dragOver);
+        item.addEventListener("touchend", function (event) {
+          drop();
+          dragEnd();
+        });
   item.querySelector(".remove-button").onclick = removeItem;
   item.querySelector(".important-button").onclick = markImportant;
   item.addEventListener("dblclick", selectItem);
@@ -341,19 +347,15 @@ function loadList() {
       if (isImportant) {
         item.querySelector(".important-button").classList.add("active");
       }
-      if (!navigator.userAgent.indexOf('IEMobile') !== -1) {
         item.draggable = true; // Enable dragging for loaded items
         item.addEventListener("dragstart", dragStart);
         item.addEventListener("dragover", dragOver);
         item.addEventListener("dragleave", dragLeave);
         item.addEventListener("drop", drop);
         item.addEventListener("dragend", dragEnd);
-      }
-      else {
         item.addEventListener("touchstart", dragStart);
         item.addEventListener("touchmove", dragOver);
         item.addEventListener("touchend", function (event) { drop(); dragEnd(); });
-      }
     });
   }
   settingsCheck = localStorage.getItem("settingsCheck") === "true";
