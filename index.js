@@ -107,27 +107,56 @@ function dragStart(event) {
   }
 
   dragSrcElement = this;
+
+  // Check if it's a touch event
+  if (event.type === "touchstart") {
+    var touch = event.touches[0];
+    event.dataTransfer = {};
+    event.dataTransfer.setData = function (type, val) {
+      event.dataTransfer[type] = val;
+    };
+    event.clientX = touch.clientX;
+    event.clientY = touch.clientY;
+  }
+
   event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.setData("text/html", this.innerHTML);
   this.classList.add("dragging");
 }
+
 function dragOver(event) {
   if (event.preventDefault) {
     event.preventDefault();
   }
+
+  // Check if it's a touch event and prevent default action
+  if (event.type === "touchmove") {
+    event.preventDefault();
+    var touch = event.touches[0];
+    event.clientX = touch.clientX;
+    event.clientY = touch.clientY;
+  }
+
   this.classList.add("drag-over");
   event.dataTransfer.dropEffect = "move";
   return false;
 }
+
 
 function dragLeave(event) {
   this.classList.remove("drag-over");
 }
 
 function dragEnd(event) {
+  // Check if it's a touch event
+  if (event.type === "touchend") {
+    event.preventDefault();
+  }
+
   this.classList.remove("drag-over");
   this.classList.remove("dragging");
 }
+
 
 function addEventListenersToItem(item) {
   item.draggable = true;
@@ -150,6 +179,15 @@ function drop(event) {
   if (event.stopPropagation) {
     event.stopPropagation();
   }
+
+  // Check if it's a touch event
+  if (event.type === "touchend") {
+    event.preventDefault();
+    var touch = event.changedTouches[0];
+    event.clientX = touch.clientX;
+    event.clientY = touch.clientY;
+  }
+
   if (dragSrcElement !== this) {
     var list = document.getElementById("list");
     var listChildren = Array.from(list.children);
@@ -174,6 +212,7 @@ function drop(event) {
   saveList();
   return false;
 }
+
 
 function addItem() {
   if (document.getElementById("box").value != "") {
