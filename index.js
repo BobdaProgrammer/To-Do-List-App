@@ -7,7 +7,6 @@ function colorChoice(colorChoice) {
   CurrentCol();
 }
 
-
 function URL(string) {
   let url = "";
   let InUrl = false;
@@ -107,56 +106,10 @@ function dragStart(event) {
   }
 
   dragSrcElement = this;
-
-  // Check if it's a touch event
-  if (event.type === "touchstart") {
-    var touch = event.touches[0];
-    event.dataTransfer = {};
-    event.dataTransfer.setData = function (type, val) {
-      event.dataTransfer[type] = val;
-    };
-    event.clientX = touch.clientX;
-    event.clientY = touch.clientY;
-  }
-
   event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.setData("text/html", this.innerHTML);
   this.classList.add("dragging");
 }
-
-function dragOver(event) {
-  if (event.preventDefault) {
-    event.preventDefault();
-  }
-
-  // Check if it's a touch event and prevent default action
-  if (event.type === "touchmove") {
-    event.preventDefault();
-    var touch = event.touches[0];
-    event.clientX = touch.clientX;
-    event.clientY = touch.clientY;
-  }
-
-  this.classList.add("drag-over");
-  event.dataTransfer.dropEffect = "move";
-  return false;
-}
-
-
-function dragLeave(event) {
-  this.classList.remove("drag-over");
-}
-
-function dragEnd(event) {
-  // Check if it's a touch event
-  if (event.type === "touchend") {
-    event.preventDefault();
-  }
-
-  this.classList.remove("drag-over");
-  this.classList.remove("dragging");
-}
-
 
 function addEventListenersToItem(item) {
   item.draggable = true;
@@ -165,54 +118,10 @@ function addEventListenersToItem(item) {
   item.addEventListener("dragleave", dragLeave);
   item.addEventListener("drop", drop);
   item.addEventListener("dragend", dragEnd);
-        item.addEventListener("touchstart", dragStart);
-        item.addEventListener("touchmove", dragOver);
-        item.addEventListener("touchend", function (event) {
-          drop();
-          dragEnd();
-        });
   item.querySelector(".remove-button").onclick = removeItem;
   item.querySelector(".important-button").onclick = markImportant;
   item.addEventListener("dblclick", selectItem);
 }
-function drop(event) {
-  if (event.stopPropagation) {
-    event.stopPropagation();
-  }
-
-  // Check if it's a touch event
-  if (event.type === "touchend") {
-    event.preventDefault();
-    var touch = event.changedTouches[0];
-    event.clientX = touch.clientX;
-    event.clientY = touch.clientY;
-  }
-
-  if (dragSrcElement !== this) {
-    var list = document.getElementById("list");
-    var listChildren = Array.from(list.children);
-    var currentInd = listChildren.indexOf(dragSrcElement);
-    var dropInd = listChildren.indexOf(this);
-
-    // Remove the dragged item from its original position
-    listChildren.splice(currentInd, 1);
-
-    // Insert the dragged item at the drop location
-    listChildren.splice(dropInd, 0, dragSrcElement);
-
-    // Update the DOM with the new order of items
-    list.innerHTML = "";
-    for (var i = 0; i < listChildren.length; i++) {
-      list.appendChild(listChildren[i]);
-    }
-  }
-
-  this.classList.remove("drag-over");
-  updateTextDecoration(this);
-  saveList();
-  return false;
-}
-
 
 function addItem() {
   if (document.getElementById("box").value != "") {
@@ -271,9 +180,47 @@ document.addEventListener("click", function (event) {
   }
 });
 
+function dragOver(event) {
+  if (event.preventDefault) {
+    event.preventDefault();
+  }
+  this.classList.add("drag-over");
+  event.dataTransfer.dropEffect = "move";
+  return false;
+}
 
+function dragLeave(event) {
+  this.classList.remove("drag-over");
+}
 
+function drop(event) {
+  if (event.stopPropagation) {
+    event.stopPropagation();
+  }
+  if (dragSrcElement !== this) {
+    var list = document.getElementById("list");
+    var listChildren = Array.from(list.children);
+    var currentInd = listChildren.indexOf(dragSrcElement);
+    var dropInd = listChildren.indexOf(this);
 
+    // Remove the dragged item from its original position
+    listChildren.splice(currentInd, 1);
+
+    // Insert the dragged item at the drop location
+    listChildren.splice(dropInd, 0, dragSrcElement);
+
+    // Update the DOM with the new order of items
+    list.innerHTML = "";
+    for (var i = 0; i < listChildren.length; i++) {
+      list.appendChild(listChildren[i]);
+    }
+  }
+
+  this.classList.remove("drag-over");
+  updateTextDecoration(this);
+  saveList();
+  return false;
+}
 
 function updateTextDecoration(item) {
   var listItemText = item.querySelector(".list-item-text");
@@ -288,6 +235,10 @@ function updateTextDecoration(item) {
   }
 }
 
+function dragEnd(event) {
+  this.classList.remove("drag-over");
+  this.classList.remove("dragging");
+}
 
 function updateTextDecoration(item) {
   var listItemText = item.querySelector(".list-item-text");
@@ -336,14 +287,12 @@ function showSuccessTick(time) {
 }
 
 function saveList() {
-
   localStorage.setItem("storedList", document.getElementById("list").innerHTML);
   localStorage.setItem("Icolor", Icolor);
   localStorage.setItem(
     "settingsCheck",
     document.getElementById("checkforsettings").checked.toString()
   );
-
 }
 
 function loadList() {
@@ -386,22 +335,19 @@ function loadList() {
       if (isImportant) {
         item.querySelector(".important-button").classList.add("active");
       }
-        item.draggable = true; // Enable dragging for loaded items
-        item.addEventListener("dragstart", dragStart);
-        item.addEventListener("dragover", dragOver);
-        item.addEventListener("dragleave", dragLeave);
-        item.addEventListener("drop", drop);
-        item.addEventListener("dragend", dragEnd);
-        item.addEventListener("touchstart", dragStart);
-        item.addEventListener("touchmove", dragOver);
-        item.addEventListener("touchend", function (event) { drop(); dragEnd(); });
+
+      item.draggable = true; // Enable dragging for loaded items
+      item.addEventListener("dragstart", dragStart);
+      item.addEventListener("dragover", dragOver);
+      item.addEventListener("dragleave", dragLeave);
+      item.addEventListener("drop", drop);
+      item.addEventListener("dragend", dragEnd);
     });
   }
   settingsCheck = localStorage.getItem("settingsCheck") === "true";
   document.getElementById("checkforsettings").checked = settingsCheck;
   CurrentCol();
 }
-
 
 function openSettings() {
   var settingsPage = document.getElementById("settingsPage");
