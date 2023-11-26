@@ -2,6 +2,7 @@ var settingsCheck = false;
 var dragSrcElement = null;
 var Icolor = "rgb(255,200,0)";
 var copyText = "";
+var target;
 function colorChoice(colorChoice) {
   Icolor = colorChoice;
   CurrentCol();
@@ -99,18 +100,28 @@ function enterKeyPressed(event) {
   }
 }
 
+var dataTransfer = {};
+
 function dragStart(event) {
-  if (event.target.classList.contains("important-button")) {
-    event.preventDefault(); // Prevent dragging if the important button is clicked
+  if (
+    event.target.classList.contains("important-button") ||
+    event.target.classList.contains("remove-button") ||
+    event.target.classList.contains("copy")
+  ) {
+    event.stopPropagation(); // Prevent dragging if a button is clicked
     return;
   }
 
   dragSrcElement = this;
-  event.dataTransfer.effectAllowed = "move";
-  event.dataTransfer.setData("text/html", this.innerHTML);
+  if (event.type === "touchstart") {
+    dataTransfer.effectAllowed = "move";
+    dataTransfer.data = this.innerHTML;
+  } else {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/html", this.innerHTML);
+  }
   this.classList.add("dragging");
 }
-
 function addEventListenersToItem(item) {
   item.draggable = true;
   item.addEventListener("dragstart", dragStart);
@@ -121,6 +132,17 @@ function addEventListenersToItem(item) {
   item.querySelector(".remove-button").onclick = removeItem;
   item.querySelector(".important-button").onclick = markImportant;
   item.addEventListener("dblclick", selectItem);
+
+  // Add touch event listeners
+  item.addEventListener("touchstart", dragStart);
+  document.addEventListener("touchmove", function (event) {
+        var touchLocation = event.targetTouches[0];
+        target = document.elementFromPoint(
+          touchLocation.clientX,
+          touchLocation.clientY
+        );
+  });
+  item.addEventListener("touchend", drop);
 }
 
 function addItem() {
@@ -181,34 +203,65 @@ document.addEventListener("click", function (event) {
 });
 
 function dragOver(event) {
+    if (
+      event.target.classList.contains("important-button") ||
+      event.target.classList.contains("remove-button") ||
+      event.target.classList.contains("copy")
+    ) {
+      event.stopPropagation(); // Prevent dragging if a button is clicked
+      return;
+    }
   if (event.preventDefault) {
     event.preventDefault();
   }
   this.classList.add("drag-over");
-  event.dataTransfer.dropEffect = "move";
+  if (event.type === "touchmove") {
+    dataTransfer.dropEffect = "move";
+  } else {
+    event.dataTransfer.dropEffect = "move";
+  }
   return false;
 }
-
 function dragLeave(event) {
   this.classList.remove("drag-over");
 }
-
 function drop(event) {
+    if (
+      event.target.classList.contains("important-button") ||
+      event.target.classList.contains("remove-button") ||
+      event.target.classList.contains("copy")
+    ) {
+      event.stopPropagation(); // Prevent dragging if a button is clicked
+      return;
+    }
   if (event.stopPropagation) {
     event.stopPropagation();
   }
-  if (dragSrcElement !== this) {
+
+
+  console.log(dragSrcElement, target)
+  if (dragSrcElement !== this||((target && target.classList.contains("list-item"))&&dragSrcElement!==target)) {
     var list = document.getElementById("list");
     var listChildren = Array.from(list.children);
     var currentInd = listChildren.indexOf(dragSrcElement);
     var dropInd = listChildren.indexOf(this);
+    if (event.type != "touchend") {
 
-    // Remove the dragged item from its original position
-    listChildren.splice(currentInd, 1);
+      // Remove the dragged item from its original position
+      listChildren.splice(currentInd, 1);
 
-    // Insert the dragged item at the drop location
-    listChildren.splice(dropInd, 0, dragSrcElement);
+      // Insert the dragged item at the drop location
+      listChildren.splice(dropInd, 0, dragSrcElement);
+    }
+    else {
+      console.log(target, dragSrcElement)
+      dropInd = listChildren.indexOf(target);
+      // Remove the dragged item from its original position
+      listChildren.splice(currentInd, 1);
 
+      // Insert the dragged item at the drop location
+      listChildren.splice(dropInd, 0, dragSrcElement);
+    }
     // Update the DOM with the new order of items
     list.innerHTML = "";
     for (var i = 0; i < listChildren.length; i++) {
@@ -335,13 +388,6 @@ function loadList() {
       if (isImportant) {
         item.querySelector(".important-button").classList.add("active");
       }
-
-      item.draggable = true; // Enable dragging for loaded items
-      item.addEventListener("dragstart", dragStart);
-      item.addEventListener("dragover", dragOver);
-      item.addEventListener("dragleave", dragLeave);
-      item.addEventListener("drop", drop);
-      item.addEventListener("dragend", dragEnd);
     });
   }
   settingsCheck = localStorage.getItem("settingsCheck") === "true";
@@ -351,34 +397,15 @@ function loadList() {
 
 function openSettings() {
   var settingsPage = document.getElementById("settingsPage");
-  if (settingsPage.style.display === "none") {
+  if (settingsPage.style.display === "") {
     settingsPage.style.display = "block";
   } else {
-    settingsPage.style.display = "none";
+    settingsPage.style.display = "";
   }
 }
-function searchCheck(value, event) {
+function searchCheck(value) {
   var tasks = document.getElementsByClassName("list-item");
-  if (
-    event.key != "Backspace" &&
-    event.key != "Shift" &&
-    event.key != "ArrowUp" &&
-    event.key != "ArrowDown" &&
-    event.key != "ArrowLeft" &&
-    event.key != "ArrowRight" &&
-    event.key != "Control" &&
-    event.key != "Alt" &&
-    event.key != "CapsLock" &&
-    event.key != "Tab" &&
-    event.key != "Escape" &&
-    event.key != "AudioVolumeMute" &&
-    event.key != "AudioVolumeUp" &&
-    event.key != "AudioVolumeDown" &&
-    event.key != "Meta" &&
-    event.key != "Enter"
-  ) {
-    value += event.key;
-    console.log(value);
+ {
     if (value != "") {
       for (var i = 0; i < tasks.length; i++) {
         var taskText = tasks[i]
@@ -390,51 +417,12 @@ function searchCheck(value, event) {
           tasks[i].style.display = "none";
         }
       }
-    } else if (event.key != "Backspace") {
-      if (value != "") {
-        for (var i = 0; i < tasks.length; i++) {
-          var taskText = tasks[i]
-            .querySelector(".list-item-text")
-            .innerHTML.toLowerCase();
-          if (taskText.includes(value.toLowerCase())) {
-            tasks[i].style.display = "flex";
-          } else {
-            tasks[i].style.display = "none";
-          }
-        }
-      }
-    } else {
+    }else {
       for (var i = 0; i < tasks.length; i++) {
         var taskText = tasks[i]
           .querySelector(".list-item-text")
           .innerHTML.toLowerCase();
         if (taskText.includes(value.toLowerCase())) {
-          tasks[i].style.display = "flex";
-        } else {
-          tasks[i].style.display = "";
-        }
-      }
-    }
-  } else {
-    val = value.slice(0, -1);
-    console.log(val);
-    if (val != "") {
-      for (var i = 0; i < tasks.length; i++) {
-        var taskText = tasks[i]
-          .querySelector(".list-item-text")
-          .innerHTML.toLowerCase();
-        if (taskText.includes(val.toLowerCase())) {
-          tasks[i].style.display = "flex";
-        } else {
-          tasks[i].style.display = "none";
-        }
-      }
-    } else {
-      for (var i = 0; i < tasks.length; i++) {
-        var taskText = tasks[i]
-          .querySelector(".list-item-text")
-          .innerHTML.toLowerCase();
-        if (taskText.includes(val.toLowerCase())) {
           tasks[i].style.display = "flex";
         } else {
           tasks[i].style.display = "";
@@ -478,7 +466,7 @@ function selectItem(event) {
   let number = "";
   function handleKeyPress(event) {
     if (event.key === "Delete") {
-      listItem.remove();
+      document.querySelector(".list-item.selected").remove();
       saveList();
     } else if (event.key >= "0" && event.key <= "9") {
       number += event.key;
