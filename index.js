@@ -140,7 +140,10 @@ function addEventListenersToItem(item) {
         target = document.elementFromPoint(
           touchLocation.clientX,
           touchLocation.clientY
-        );
+    );
+    if (target.tagName !== "DIV") {
+      target = target.parentElement;
+    }
   });
   item.addEventListener("touchend", drop);
 }
