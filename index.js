@@ -148,6 +148,17 @@ function addEventListenersToItem(item) {
   item.addEventListener("touchend", drop);
 }
 
+function edit(event) {
+  let ItemText = event.target.parentNode.querySelector(".list-item-text");
+  ItemText.contentEditable = true;
+}
+
+function urgent(event) {
+  let element = event.target;
+  element.style.backgroundColor = element.style.backgroundColor == "white" ? "red" : "white"
+  saveList()
+}
+
 function addItem() {
   if (document.getElementById("box").value != "") {
     var newItem = document.createElement("div");
@@ -170,7 +181,32 @@ function addItem() {
       text.innerHTML = document.getElementById("box").value;
       newItem.appendChild(text);
     }
+    let urgentButton = document.createElement("span");
+    urgentButton.className = "urgent"
+    urgentButton.onclick = urgent
+    urgentButton.innerHTML = "!";
+    urgentButton.style.backgroundColor = "white"
+    newItem.appendChild(urgentButton)
 
+    let editButton = document.createElement("span");
+    editButton.className = "edit";
+    editButton.onclick = edit;
+    editButton.innerHTML = "✏️";
+    newItem.appendChild(editButton)
+        editButton.parentNode
+          .querySelector(".list-item-text")
+          .addEventListener("keyup", function (event) {
+            if (event.key == "Enter") {
+              textElement =
+                editButton.parentNode.querySelector(".list-item-text");
+              textElement.contentEditable = false;
+              textElement.textContent = textElement.textContent.replace(
+                "\n",
+                ""
+              );
+              saveList();
+            }
+          });
     var copyButton = document.createElement("span");
     copyButton.className = "copy";
     copyButton.onclick = copy;
@@ -358,6 +394,8 @@ function loadList() {
     document.getElementById("list").innerHTML = listHTML;
     var removeButtons = document.querySelectorAll(".list-item .remove-button");
     var copyButtons = document.querySelectorAll(".copy");
+    var editButtons = document.querySelectorAll(".edit");
+    var urgentButtons = document.querySelectorAll(".urgent");
     removeButtons.forEach(function (button) {
       button.onclick = removeItem;
     });
@@ -365,6 +403,21 @@ function loadList() {
     copyButtons.forEach(function (button) {
       button.onclick = copy;
     });
+        urgentButtons.forEach(function (button) {
+          button.onclick = urgent;
+        });
+
+        editButtons.forEach(function (button) {
+          button.onclick = edit;
+          button.parentNode.querySelector(".list-item-text").addEventListener("keyup", function (event) {
+            if (event.key == "Enter") {
+              textElement = button.parentNode.querySelector(".list-item-text");
+              textElement.contentEditable = false;
+              textElement.textContent = textElement.textContent.replace("\n","")
+              saveList();
+            }
+          });
+        });
 
     var importantButtons = document.querySelectorAll(
       ".list-item .important-button"

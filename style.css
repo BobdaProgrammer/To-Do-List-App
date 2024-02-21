@@ -227,9 +227,27 @@ body {
     text-align: center;
     border-radius: 10%;
     background-color: transparent;
-    border: 2px solid black;
+    border: 2px solid rgb(6, 5, 5);
     color: #000;
     cursor: pointer;
+}
+.edit{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+.urgent{
+    margin-right: 5px;
+    background-color: white;
+    border-radius: 75%;
+    border: 2px solid black;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
 }
 .Isearch{
     margin-left: 47%;
