@@ -643,7 +643,7 @@ function UIColor(color){
 function small(stat) {
   if (stat) {
     document.querySelectorAll(".list-item").forEach(function (item) {
-      item.style.padding =""
+      item.style.padding = "0px"
     });
     Issmall = true
   } else {
