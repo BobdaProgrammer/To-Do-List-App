@@ -237,9 +237,6 @@ function addItem() {
     document.getElementById("box").value = "";
     addEventListenersToItem(newItem);
     saveList();
-    if (onelineenabled) {
-      oneline(true)
-    }
     if (green) {
       UIColor("green")
     }
@@ -496,9 +493,6 @@ function loadList() {
   document.getElementById("checkforsettings").checked = settingsCheck;
   CurrentCol();
   searchImportant(document.getElementById("searchImportant"))
-      if (onelineenabled) {
-        oneline(true);
-      }
       if (green) {
         UIColor("green");
       }
