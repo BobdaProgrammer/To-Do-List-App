@@ -11,21 +11,23 @@
   <script src="index.js"></script>
   <body>
     <div class="main" id="main">
+        <div class="top-row">
     <div id="color_Menu" class="colorMenu">
-        <button id="colorWhite" aria-label="color white" class="colorWhite" onclick="colorChoice('rgb(0, 0, 0)')"></button>
-        <button id="colorGreen" aria-label="color green" class="colorGreen" onclick="colorChoice('rgb(0,130,55)'); showSuccessTick(500);"></button>
-        <button id="colorOrange" aria-label="color orange" class="colorOrange" onclick="colorChoice('rgb(220, 172, 0)'); showSuccessTick(500);"></button>
-        <button id="colorPink" aria-label="color pink" class="colorPink"onclick="colorChoice('rgb(230,80,105)'); showSuccessTick(500);"></button>
-        <button id="colorBlue" aria-label="color blue" class="colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
+        <button id="colorWhite" aria-label="color white" class="colorThing colorWhite" onclick="colorChoice('rgb(0, 0, 0)')"></button>
+        <button id="colorGreen" aria-label="color green" class="colorThing colorGreen" onclick="colorChoice('rgb(0,130,55)'); showSuccessTick(500);"></button>
+        <button id="colorOrange" aria-label="color orange" class="colorThing colorOrange" onclick="colorChoice('rgb(220, 172, 0)'); showSuccessTick(500);"></button>
+        <button id="colorPink" aria-label="color pink" class="colorThing colorPink"onclick="colorChoice('rgb(230,80,105)'); showSuccessTick(500);"></button>
+        <button id="colorBlue" aria-label="color blue" class="colorThing colorBlue"onclick="colorChoice('rgb(80,173,230)'); showSuccessTick(500);"></button>
     </div>
     <div class="searchbar">
         <input type="text" id="searchBox" aria-label="search box" class="search" onkeyup="searchCheck(value)" >
         <button id = "searchImportant" aria-label="search by color" class="Isearch" onclick="searchImportant(this)"></button>
     </div>
-    </div>
     <div class="sort-container">
         <button aria-label="sort items" onclick="showSuccessTick(1000); Sort(); Sort();" class="Sort">Sort</button>
     </div>
+    </div>
+</div>
     <div class="container">
         <input type="text" id="box" class="box" aria-label="new item text box" onkeydown="return enterKeyPressed(event)">
         <input type="button" id="AddNewItem" aria-label="add Item button" value="Add Item" onclick="addItem();" class="button">
@@ -34,6 +36,25 @@
     </div>
     <div id="settings" onclick="openSettings();" class="settings"></div>
     <div id="settingsPage" class="settings-page">
+        <label for="UIcolor">
+            <p align="center">UI color</p>
+            <button onclick="UIColor('aqua')">cyan</button>
+            <button onclick="UIColor('green')">green</button>
+        </label>
+        <label for="changeBackground">
+            <p align="center">Background color</p>
+            <button onclick="BackColor('')">default</button>
+            <button onclick="BackColor('rgb(255, 0, 102)')">pink</button>
+            <button onclick="BackColor('rgb(0, 255, 204)')">cyan</button>
+            <button onclick="BackColor('rgb(0, 255, 153)')">green</button>
+            <button onclick="BackColor('rgb(255, 204, 0)')">yellow</button>
+        </label>
+        <label for="one line mode">
+            <input type="checkbox" id="oneline" onclick="oneline(this.checked)"> One line mode
+        </label>
+        <label for="small tasks">
+            <input type="checkbox" id="smalltasks" onclick="small(this.checked)"> smaller tasks
+        </label>
         <label for="checkforsettings">
             <input type="checkbox" id="checkforsettings"> Show finished items as strikethrough
         </label>

@@ -4,7 +4,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.main {
+    margin: 7px auto;
+}
 .searchbar{
     max-width: 400px;
     padding: 20px;
@@ -256,7 +258,7 @@ body {
     line-height: 20px;
     text-align: center;
     border-radius: 50%;
-    background-color: transparent;
+    background-color: none;
     border: 2px solid black;
     color: #000;
     cursor: pointer;
@@ -272,36 +274,30 @@ body {
     text-align: center;
 }
 .colorWhite{
-    width: 15px;
-    height: 15px;
     border-radius: 15px;
     background-color: rgb(255, 255, 255);
     border: 2px solid black;
 }
 .colorGreen{
-    width: 15px;
-    height: 15px;
     border-radius: 15px;
     background-color: rgb(0, 255, 110);
     border: 2px solid black;
 }
-.colorOrange{
+.colorThing{
     width: 15px;
     height: 15px;
+}
+.colorOrange{
     border-radius: 15px;
     background-color: rgb(255, 200, 0);
     border: 2px solid black;
 }
 .colorPink{
-    width: 15px;
-    height: 15px;
     border-radius: 15px;
     background-color: rgb(230, 80, 105);
     border: 2px solid black;
 }
 .colorBlue{
-    width: 15px;
-    height: 15px;
     border-radius: 15px;
     background-color: rgb(80, 220, 230);
     border: 2px solid black;

@@ -2,6 +2,9 @@ var settingsCheck = false;
 var dragSrcElement = null;
 var Icolor = "rgb(255,200,0)";
 var copyText = "";
+let onelineenabled = false;
+let green = false;
+let Issmall = false;
 var target;
 function colorChoice(colorChoice) {
   Icolor = colorChoice;
@@ -148,6 +151,11 @@ function addEventListenersToItem(item) {
   item.addEventListener("touchend", drop);
 }
 
+function BackColor(color) {
+  document.body.style.backgroundColor = color
+  localStorage.setItem("backcolor",color)
+}
+
 function edit(event) {
   let ItemText = event.target.parentNode.querySelector(".list-item-text");
   ItemText.contentEditable = true;
@@ -229,6 +237,15 @@ function addItem() {
     document.getElementById("box").value = "";
     addEventListenersToItem(newItem);
     saveList();
+    if (onelineenabled) {
+      oneline(true)
+    }
+    if (green) {
+      UIColor("green")
+    }
+    if (Issmall) {
+      small(true)
+    }
   }
 }
 document.addEventListener("click", function (event) {
@@ -379,6 +396,9 @@ function showSuccessTick(time) {
 }
 
 function saveList() {
+  localStorage.setItem("green", green)
+  localStorage.setItem("small", Issmall)
+  localStorage.setItem("oneline", onelineenabled)
   localStorage.setItem("storedList", document.getElementById("list").innerHTML);
   localStorage.setItem("Icolor", Icolor);
   localStorage.setItem(
@@ -388,6 +408,32 @@ function saveList() {
 }
 
 function loadList() {
+  if (localStorage.getItem("green") != null) {
+    green = localStorage.getItem("green")
+    if (green == "true") {
+      green = true
+    } else {
+      green = false
+    }
+  }
+  if (localStorage.getItem("small") != null) {
+    Issmall = localStorage.getItem("small")
+        if (Issmall == "true") {
+          Issmall = true;
+          document.getElementById("smalltasks").checked = true;
+        } else {
+          Issmall = false;
+    }
+  }
+  if (localStorage.getItem("oneline") != null) {
+    onelineenabled = localStorage.getItem("oneline")
+        if (onelineenabled == "true") {
+          onelineenabled = true;
+          document.getElementById("oneline").checked = true;
+        } else {
+          onelineenabled = false;
+        }
+  }
   Icolor = localStorage.getItem("Icolor");
   var listHTML = localStorage.getItem("storedList");
   if (listHTML) {
@@ -449,6 +495,16 @@ function loadList() {
   settingsCheck = localStorage.getItem("settingsCheck") === "true";
   document.getElementById("checkforsettings").checked = settingsCheck;
   CurrentCol();
+  searchImportant(document.getElementById("searchImportant"))
+      if (onelineenabled) {
+        oneline(true);
+      }
+      if (green) {
+        UIColor("green");
+      }
+      if (Issmall) {
+        small(true);
+      }
 }
 
 function openSettings() {
@@ -489,15 +545,20 @@ function searchCheck(value) {
 }
 function searchImportant(thing) {
   var listStuff = document.getElementsByClassName("list-item");
+  console.log(thing.style.backgroundColor);
   if (thing.style.backgroundColor == "") {
-    thing.style.backgroundColor = Icolor;
+    thing.style.backgroundColor = "rgb(255, 255, 255)";
   } else {
-    thing.style.backgroundColor = "";
+    if (Icolor != "rgb(0, 0, 0)") {
+      thing.style.backgroundColor = Icolor;
+    } else {
+      thing.style.backgroundColor = "rgb(255, 255, 255)";
+    }
   }
   for (var f = 0; f < listStuff.length; f++) {
     var taskIColor = listStuff[f].querySelector(".list-item .important-button")
       .style.backgroundColor;
-    if (thing.style.backgroundColor == "") {
+    if (thing.style.backgroundColor == "rgb(255, 255, 255)") {
       listStuff[f].style.display = "flex";
       continue;
     }
@@ -559,6 +620,122 @@ function selectItem(event) {
   document.addEventListener("keydown", handleKeyPress);
 }
 
+function UIColor(color){
+  document.querySelector(".Sort").style.backgroundColor = color
+  document.querySelector(".search").style.border = "2px solid " + color
+  document.querySelector(".box").style.border = "2px solid " + color
+  document.querySelectorAll(".button").forEach(function (button) {
+    button.style.backgroundColor = color
+  });
+  document.querySelectorAll(".list-item").forEach(function (button) {
+    button.style.border = "1px solid "+color;
+  });
+    document.querySelectorAll(".settings-page button").forEach(function (button) {
+      button.style.backgroundColor = color;
+    });
+  if (color == "green") {
+    green = true
+  } else {
+    green = false
+  }
+  saveList();
+}
+function small(stat) {
+  if (stat) {
+    document.querySelectorAll(".list-item").forEach(function (item) {
+      item.style.padding =""
+    });
+    Issmall = true
+  } else {
+        document.querySelectorAll(".list-item").forEach(function (item) {
+          item.style.padding = "10px";
+        });
+    Issmall = false
+  }
+  saveList()
+}
+function oneline(stat) {
+  if (stat) {
+    onelineenabled = true
+    const toprowel = document.querySelector(".top-row");
+    const toprow = document.querySelector(".top-row").style
+    toprow.display = "flex";
+    toprow.justifyContent = "center"
+    toprow.alignItems = "center"
+    const main = document.querySelector(".main").style;
+    main.textAlign = "center"
+    main.maxWidth = "800px"
+    main.maxHeight = "200px"
+    const colorMenu = document.querySelector(".colorMenu").style;
+    colorMenu.flex = "1"
+    colorMenu.padding = "10px"
+    colorMenu.height = "35px"
+    const searchBar = document.querySelector(".searchbar").style
+    searchBar.flex = "1"
+    searchBar.height = "35px"
+    searchBar.padding = "10px"
+    searchBar.textAlign = "center"
+    searchBar.maxWidth = ""
+    searchBar.margin = "0px"
+    searchBar.display = "flexbox"
+    document.querySelector(".Isearch").style.display = "none"
+    const newSearchWithCol = document.createElement("button")
+    newSearchWithCol.id = "searchImportant";
+    newSearchWithCol.ariaLabel = "search by color"
+    newSearchWithCol.classList = "Isearch"
+    newSearchWithCol.style.marginLeft = "5px"
+    newSearchWithCol.onclick = searchImportant(newSearchWithCol)
+    toprowel.appendChild(newSearchWithCol)
+    const search = document.querySelector(".search").style;
+    search.marginBottom = "5px"
+    search.height = "35px"
+    document.querySelectorAll(".colorThing").forEach(function (colorThing) {
+      colorThing.style.width = "30px"
+      colorThing.style.height = "30px"
+    });
+  } else {
+    onelineenabled = false
+        const toprowel = document.querySelector(".top-row");
+        const toprow = document.querySelector(".top-row").style;
+        toprow.display = "";
+        toprow.justifyContent = "";
+        toprow.alignItems = "";
+        const main = document.querySelector(".main").style;
+        main.textAlign = "center";
+        main.maxWidth = "none";
+        main.maxHeight = "none";
+        const colorMenu = document.querySelector(".colorMenu").style;
+        colorMenu.flex = "";
+        colorMenu.padding = "20px";
+        colorMenu.height = "";
+        const searchBar = document.querySelector(".searchbar").style;
+        searchBar.flex = "";
+        searchBar.height = "";
+        searchBar.padding = "20px";
+        searchBar.textAlign = "";
+        searchBar.maxWidth = "";
+        searchBar.margin = "7px auto";
+        searchBar.display = "";
+        document.querySelector(".Isearch").style.display = "inherit";
+        toprowel.removeChild(toprowel.children[toprowel.children.length-1]);
+        const search = document.querySelector(".search").style;
+        search.marginBottom = "2px";
+        search.height = "40px";
+        document.querySelectorAll(".colorThing").forEach(function (colorThing) {
+          colorThing.style.width = "15px";
+          colorThing.style.height = "15px";
+        });
+        document.querySelector(".container").style.margin = "7px auto";
+  }
+  saveList();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  let backcolor=localStorage.getItem("backcolor")
+  if (backcolor == null) {
+    backcolor = ""
+    localStorage.setItem("backcolor",backcolor)
+  }
+  document.body.style.backgroundColor = backcolor
   loadList();
 });
